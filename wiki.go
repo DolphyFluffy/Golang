@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
+	"net/http"
 )
 
 // Describes how page data will be stored in memory
@@ -29,9 +31,14 @@ func loadPage(title string) (*Page, error) {
 	return &Page{Title: title, Body: body}, nil
 }
 
+// viewHandler allows ysers to view a wiki page
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+	title := r.URL.Path[len("/view/"):] // Extracts the URL after the static '/view/' path
+	p, _ := loadPage(title)             // Loads page with the title in the url and writes to w http.ResponseWriter
+	fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
+}
+
 func main() {
-	p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
-	p1.save()
-	p2, _ := loadPage("TestPage")
-	fmt.Println(string(p2.Body))
+	http.HandleFunc("/view/", viewHandler)       // Tells http pacakge to handle reqquest with '/view/' root
+	log.Fatal(http.ListenAndServe(":8080", nil)) // Listens on port 8080 until an error occurs or termination
 }
