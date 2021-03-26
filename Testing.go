@@ -1,10 +1,10 @@
-package main
+// package main
 
-import (
-	"fmt"
-)
+// import (
+// 	"fmt"
+// )
 
-func main() {
-	fmt.Println("Does this work?")
-	fmt.Println("Yes it does!")
-}
+// func main() {
+// 	fmt.Println("Does this work?")
+// 	fmt.Println("Yes it does!")
+// }
